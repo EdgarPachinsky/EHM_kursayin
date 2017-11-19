@@ -9,11 +9,10 @@ if(isset($_SESSION['login']))
     header("location:index.php");
    }
 
-?>
-<?php
+
   require "connect.php";
   include "functions.php";
-  $sql = " SELECT * FROM `product_categories`";
+  /*$sql = " SELECT * FROM `product_categories`";
   $cats =sql_query($sql);
     $prodCount=80;
     $page_array=array(); 
@@ -42,7 +41,7 @@ if(isset($_SESSION['login']))
              $page_array[$array_id]=$buttonRes[$i]['id'];
              $array_id++ ;
          }
-     }    
+     }    */
 
    /*  if(isset($_POST['product_index']))
      {
@@ -50,7 +49,22 @@ if(isset($_SESSION['login']))
       unset($_POST['product_index']);
      }
      else*/
-   $index=0;
+  // $index=0;
+
+
+
+  $sql = "SELECT * FROM `product_categories`";
+  $stmt_catsN = $db->prepare($sql);
+  $stmt_catsN->execute();
+  $cats = $stmt_catsN->fetchAll();
+  $stmt_catsN->closeCursor();
+
+
+  $sql = "SELECT * FROM `products`";
+  $stmt_catsN = $db->prepare($sql);
+  $stmt_catsN->execute();
+  $prodsf = $stmt_catsN->fetchAll();
+  $stmt_catsN->closeCursor();
 ?>
 
 
@@ -104,8 +118,11 @@ if(isset($_SESSION['login']))
                                 <div class="modal-body">
                                     <p>Edit <?php echo $cat['product_category_name']?></p>
                                      <form action="admin_edit_delete_add.php" method="post">
+                                       <p>Category Name</p>
                                        <input type="text" name="product_category_name" value="<?php echo $cat['product_category_name']?>" placeholder="Category Name *" required> <br>
+                                       <p>Category Description</p>
                                        <textarea name="product_category_description"  placeholder="Category Description *" required><?php echo $cat['product_category_description']?></textarea><br>
+
                                        <input type="hidden" name="category_edit" value="15">
                                        <input type="hidden" name="id" value="<?php echo $cat['id']?>">
                                        <button class='btn_sumbit'>EDIT</button>
@@ -184,7 +201,7 @@ if(isset($_SESSION['login']))
           </li>
         <?php }?>
 
-        <button class="add_product_btn btn btn-default open_modal" ><i class="fa fa-plus-circle" aria-hidden="true"></i> Add New</button>
+        <button class="add_product_btn btn btn-default open_modal" ><i class="fa fa-plus-circle" aria-hidden="true"></i> Add New Category</button>
                <!-- add modal -->
                         <div class='modal_div add_modal'>
                             <div class="modal_div-content">
@@ -238,6 +255,39 @@ if(isset($_SESSION['login']))
 
 
           <div class="all-prods">
+             <button class="add_product_btn btn btn-default open_modal" ><i class="fa fa-plus-circle" aria-hidden="true"></i> Add New Product</button>
+               <!-- add modal -->
+                        <div class='modal_div add_modal'>
+                            <div class="modal_div-content">
+                                <div class="modal_div-header">
+                                    <button class="close_modal" ><i class="fa fa-times" aria-hidden="true"></i></button>
+                                    <h4 class="modal_title">Add Product</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Add Product</p>
+                                     <form action="admin_edit_delete_add.php" method="post">
+                                       <input type="text" name="product_name" placeholder="Product Name *" required> <br>
+                                       <textarea name="product_description" placeholder="Product Description *" required></textarea><br>
+                                       <input type="text" name="product_place" placeholder="Product Place *" required> <br>
+                                       <input type="number" name="product_price" placeholder="Product Price *" required>  <br>
+                                       <input type="number" name="product_count" placeholder="Product Count *" required>  <br>
+                                       <p>Product Category</p>
+                                       <select name='category_id'>
+                                        <option></option>
+                                         <?php foreach ($cats as $cat) {?>
+                                           <option value="<?php echo $cat['id'] ?>"><?php echo $cat['product_category_name'] ?></option>
+                                        <?php } ?>
+                                       </select> <br>
+                                       <input type="hidden" name="product_add">
+                                       <button class='btn_sumbit'>ADD</button>
+                                     </form>    
+                                </div>
+                                <div class="modal_div-footer">
+                                  <button class="close_modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+               <!-- add modal end -->
             <table border='1' class = "custom-table">
               <tr>
                 <td class ="tableTd nameSpace"><i class="fa fa-sort-alpha-asc" aria-hidden="true"></i> Product Name </td>
@@ -245,13 +295,14 @@ if(isset($_SESSION['login']))
                 <td class ="tableTd nameSpace"><i class="fa fa-archive" aria-hidden="true"></i> Product Description </td>
                 <td class ="tableTd nameSpace"><i class="fa fa-map-marker" aria-hidden="true"></i> Product Place    </td>
                 <td class ="tableTd nameSpace"><i class="fa fa-money" aria-hidden="true"></i> Product Price         </td>
+                <td class ="tableTd nameSpace"><i class="fa fa-money" aria-hidden="true"></i> Product Count         </td>
                 <td  class="actionTd"><i class="fa fa-pencil" aria-hidden="true"></i> Actions</td>
               </tr>
               <?php
               foreach($prodsf as $prodf){?>
-                <tr width = 200>
+                <tr width = 200 class = "click-to-see-product">
                  
-                  <td class ="tableTd"><?php echo $prodf['product_name']?></td>
+                  <td class ="tableTd" ><?php echo $prodf['product_name']?></td>
 
                   <?php 
                     $prodCatd = $prodf['category_id'];
@@ -266,6 +317,16 @@ if(isset($_SESSION['login']))
                   <td class ="tableTd"><?php echo $prodf['product_description']?></td>
                   <td class ="tableTd"><?php echo $prodf['product_place']?></td>
                   <td class ="tableTd"><?php echo $prodf['product_price']?></td>
+
+                  <?php if($prodf['product_count'] == 0){?>
+                  <td class ="tableTd" style="background: #ff000087"><?php echo $prodf['product_count']?></td>
+                  <?php } else if($prodf['product_count'] > 0 && $prodf['product_count'] < 20 ){ ?>
+                  <td class ="tableTd" style="background: #0000ff80"><?php echo $prodf['product_count']?></td>
+                  <?php } else if($prodf['product_count'] > 20 ){ ?>
+                  <td class ="tableTd" style="background: #00800080"><?php echo $prodf['product_count']?></td>
+                  <?php }?>
+
+
                   <td  class="actionTd">
                   	
                   		<button class="action_buttons action_edit open_edit_modal" value="<?php echo $prodf['id']; ?>"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>   
@@ -279,10 +340,16 @@ if(isset($_SESSION['login']))
                                 <div class="modal-body">
                                     <p>Edit <?php echo $prodf['product_name']?></p>
                                      <form action="admin_edit_delete_add.php" method="post">
+                                       <p>Product Name</p>
                                        <input type="text" name="product_name" value="<?php echo $prodf['product_name']?>" placeholder="Product Name *" required> <br>
+                                       <p>Product Description</p>
                                        <textarea name="product_description"  placeholder="Product Description *" required><?php echo $prodf['product_description']?></textarea><br>
+                                       <p>Product Place</p>
                                        <input type="text" value="<?php echo $prodf['product_place']?>" name="product_place" placeholder="Product Place *" required> <br>
+                                       <p>Product Price</p>
                                        <input type="number" name="product_price" value="<?php echo $prodf['product_price']?>" placeholder="Product Price *" required>  <br>
+                                       <p>Product Count</p>
+                                       <input type="number" name="product_count" value="<?php echo $prodf['product_count']?>" placeholder="Product Price *" required>  <br>
                                        <p>Product Category</p>
                                        <select name='category_id' value="<?php echo $prodf['category_id']?>">
                                         <option></option>
@@ -340,43 +407,12 @@ if(isset($_SESSION['login']))
               <?php }?>
             </table>
                 
-            <button class="add_product_btn btn btn-default open_modal" ><i class="fa fa-plus-circle" aria-hidden="true"></i> Add New</button>
-               <!-- add modal -->
-                        <div class='modal_div add_modal'>
-                            <div class="modal_div-content">
-                                <div class="modal_div-header">
-                                    <button class="close_modal" ><i class="fa fa-times" aria-hidden="true"></i></button>
-                                    <h4 class="modal_title">Add Product</h4>
-                                </div>
-                                <div class="modal-body">
-                                    <p>Add Product</p>
-                                     <form action="admin_edit_delete_add.php" method="post">
-                                       <input type="text" name="product_name" placeholder="Product Name *" required> <br>
-                                       <textarea name="product_description" placeholder="Product Description *" required></textarea><br>
-                                       <input type="text" name="product_place" placeholder="Product Place *" required> <br>
-                                       <input type="number" name="product_price" placeholder="Product Price *" required>  <br>
-                                       <p>Product Category</p>
-                                       <select name='category_id'>
-                                        <option></option>
-                                         <?php foreach ($cats as $cat) {?>
-                                           <option value="<?php echo $cat['id'] ?>"><?php echo $cat['product_category_name'] ?></option>
-                                        <?php } ?>
-                                       </select> <br>
-                                       <input type="hidden" name="product_add">
-                                       <button class='btn_sumbit'>ADD</button>
-                                     </form>    
-                                </div>
-                                <div class="modal_div-footer">
-                                  <button class="close_modal">Close</button>
-                                </div>
-                            </div>
-                        </div>
-               <!-- add modal end -->
 
 
 
 
-              <div class='cub_pages col-md-12 col-md-offset-0' >
+
+              <!-- <div class='cub_pages col-md-12 col-md-offset-0' >
                 <div class='pages'> 
                   <form action="index.php" method="post">
 
@@ -391,7 +427,7 @@ if(isset($_SESSION['login']))
                     <?php  } ?>
                   </form>
                 </div> 
-              </div>
+              </div> -->
 
 
 

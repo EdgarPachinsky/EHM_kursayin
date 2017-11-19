@@ -136,7 +136,7 @@ else
               </tr>
               <?php
               foreach($prodsf as $prodf){?>
-                <tr width = 200 class = "click-to-see-product" style="cursor: pointer;">
+                <tr width = 200 class = "click-to-see-product">
 
                   <td class ="tableTd"><?php echo $prodf['product_name']?></td>
 
