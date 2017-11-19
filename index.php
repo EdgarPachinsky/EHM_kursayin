@@ -127,6 +127,7 @@
                 <td class ="tableTd nameSpace"><i class="fa fa-archive" aria-hidden="true"></i> Product Description </td>
                 <td class ="tableTd nameSpace"><i class="fa fa-map-marker" aria-hidden="true"></i> Product Place    </td>
                 <td class ="tableTd nameSpace"><i class="fa fa-money" aria-hidden="true"></i> Product Price         </td>
+                <td class ="tableTd nameSpace"><i class="fa fa-check-square-o" aria-hidden="true"></i> Product Count         </td>
               </tr>
               <?php
               foreach($prodsf as $prodf){?>
@@ -147,6 +148,15 @@
                   <td class ="tableTd"><?php echo $prodf['product_description']?></td>
                   <td class ="tableTd"><?php echo $prodf['product_place']?></td>
                   <td class ="tableTd"><?php echo $prodf['product_price']?></td>
+
+                  <?php if($prodf['product_count'] == 0){?>
+                  <td class ="tableTd" style="background: #ff000087"><?php echo $prodf['product_count']?></td>
+                  <?php } else if($prodf['product_count'] > 0 && $prodf['product_count'] < 20 ){ ?>
+                  <td class ="tableTd" style="background: #0000ff80"><?php echo $prodf['product_count']?></td>
+                  <?php } else if($prodf['product_count'] > 20 ){ ?>
+                  <td class ="tableTd" style="background: #00800080"><?php echo $prodf['product_count']?></td>
+                  <?php }?>
+
                 </tr>
               <?php }?>
             </table>
