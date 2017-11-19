@@ -78,12 +78,33 @@ $(document).ready(function() {
     })
   })
 
+  ///////////////////////sorting by name/////////////
+
   $('.sorting-by-name').click(function(){
        var sort=$('#sorting').val()
     $.post('index.php',{sorting:sort},function(res){
       $('body').html(res);
     })
 
+  })
+
+  ///////////////////////sorting by price/////////////
+
+  $('.sorting-by-price').click(function(){
+       var price=$('#price_sort').val()
+    $.post('index.php',{price_sort:price},function(res){
+      $('body').html(res);
+    })
+
+  })
+
+  ///////////////////////sorting by count/////////////
+
+  $('.sorting-by-count').click(function(){
+       var count=$('#count_sort').val()
+    $.post('index.php',{count_sort:count},function(res){
+      $('body').html(res);
+    })
 
   })
 

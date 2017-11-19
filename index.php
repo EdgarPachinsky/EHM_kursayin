@@ -5,6 +5,14 @@ if(isset($_POST['sorting']))
 {  $sort=$_POST['sorting'];
    $sql = "SELECT * FROM `products` ORDER BY `products`.`product_name`".$sort;
 }
+else if(isset($_POST['price_sort']))
+{  $sort_price=$_POST['price_sort'];
+   $sql = "SELECT * FROM `products` ORDER BY `products`.`product_price`".$sort_price;
+}
+else if(isset($_POST['count_sort']))
+{  $sort_count=$_POST['count_sort'];
+   $sql = "SELECT * FROM `products` ORDER BY `products`.`product_count`".$sort_count;
+}
 else
 {
   $sql = "SELECT * FROM `products`";
@@ -122,17 +130,25 @@ else
                 <div class="search_result"></div>
               <!-- END RESULT -->
           </div>
+          <!-- sorting inputs -->
           <input type="hidden" value="<?php if(isset($_POST['sorting'])){ if($sort=="DESC"){echo "ASC";}else{echo "DESC";}}else{echo "ASC"; } ?>" id="sorting">
 
+          <input type="hidden" value="<?php if(isset($_POST['price_sort'])){ if($sort_price=="DESC"){echo "ASC";}else{echo "DESC";}}else{echo "ASC"; } ?>" id="price_sort">
+           
+         <input type="hidden" value="<?php if(isset($_POST['count_sort'])){ if($sort_count=="DESC"){echo "ASC";}else{echo "DESC";}}else{echo "ASC"; } ?>" id="count_sort">
+
+
+          <!-- end sorting inputs -->
           <div class="all-prods">
             <table border='1' class = "custom-table">
               <tr>
-                <td class ="tableTd nameSpace sorting-by-name"><i class="fa fa-sort-alpha-asc" aria-hidden="true"></i> Product Name <?php if(isset($_POST['sorting'])){echo $_POST['sorting'];} ?></td>
-                <td class ="tableTd nameSpace"><i class="fa fa-bars" aria-hidden="true"></i> Product Category       </td>
+                <td class ="tableTd nameSpace sorting-by-name" title="Sorting By Name"><i class="fa fa-sort-alpha-asc" aria-hidden="true"></i> Product Name <?php if(isset($_POST['sorting'])){echo $_POST['sorting'];} ?></td>
+                <td class ="tableTd nameSpace"><i class="fa fa-bars" aria-hidden="true"></i> Product Category</td>
                 <td class ="tableTd nameSpace"><i class="fa fa-archive" aria-hidden="true"></i> Product Description </td>
                 <td class ="tableTd nameSpace"><i class="fa fa-map-marker" aria-hidden="true"></i> Product Place    </td>
-                <td class ="tableTd nameSpace"><i class="fa fa-money" aria-hidden="true"></i> Product Price         </td>
-                <td class ="tableTd nameSpace"><i class="fa fa-check-square-o" aria-hidden="true"></i> Product Count         </td>
+                <td class ="tableTd nameSpace sorting-by-price" title="Sorting By Price"><i class="fa fa-money" aria-hidden="true"></i>Product Price
+                <?php if(isset($_POST['price_sort'])){echo $_POST['price_sort'];} ?></td>
+                <td class ="tableTd nameSpace sorting-by-count" title="Sorting By Count"><i class="fa fa-check-square-o" aria-hidden="true"></i> Product Count<?php if(isset($_POST['count_sort'])){echo $_POST['count_sort'];} ?></td>
               </tr>
               <?php
               foreach($prodsf as $prodf){?>
