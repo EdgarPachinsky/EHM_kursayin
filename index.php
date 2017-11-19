@@ -1,44 +1,12 @@
 <?php
   require "connect.php";
-  error_reporting(0);
-  $sql = " SELECT * FROM `product_categories`";
-  $cats =sql_query($sql);
-    $prodCount=80;
-    $page_array=array(); 
-    $page_array[0]=0;
-    $lastId =0;
-  
-    if(isset($_POST['pageIndex']) && $_POST['pageIndex']!=0 ){
-        $lastId = $_POST['pageIndex'];
-        $prod_sql="SELECT * FROM `products` WHERE `id` < '$lastId' ORDER BY `id` DESC LIMIT $prodCount ";
-    }
-    else {
-         $prod_sql="SELECT * FROM `products`  ORDER BY `id` DESC LIMIT $prodCount ";
-    }
 
+  $sql = "SELECT * FROM `products`";
+  $stmt_prod = $db->prepare($sql);
+  $stmt_prod->execute();
+  $prodsf = $stmt_prod->fetchAll();
+  $stmt_prod->closeCursor();
 
-    $prodsf = sql_query($prod_sql);
-    $buttonsQuery="SELECT `id` FROM `products`  ORDER BY `id` DESC";
-    $buttonRes=sql_query($buttonsQuery);
-   
-    $array_id=1;
-    $id_count=0;
-    
-     for ($i=0; $i < count($buttonRes) ; $i++) { 
-         $id_count++ ;
-         if($id_count%$prodCount==0 && isset($buttonRes[$i+1]['id']))        {
-             $page_array[$array_id]=$buttonRes[$i]['id'];
-             $array_id++ ;
-         }
-     }    
-
-   /*  if(isset($_POST['product_index']))
-     {
-      $index=$_POST['product_index'];
-      unset($_POST['product_index']);
-     }
-     else*/
-   $index=0;
 ?>
 
 
@@ -156,7 +124,7 @@
               </tr>
               <?php
               foreach($prodsf as $prodf){?>
-                <tr width = 200 class = "click-to-see-product">
+                <tr width = 200 class = "click-to-see-product" style="cursor: pointer;">
 
                   <td class ="tableTd"><?php echo $prodf['product_name']?></td>
 
@@ -176,25 +144,7 @@
                 </tr>
               <?php }?>
             </table>
-              
-              <div class='cub_pages col-md-12 col-md-offset-0' >
-                <div class='pages'> 
-                  <form action="index.php" method="post">
-
-                    <?php         
-                    for($i=0;$i<count($page_array);$i++){?>   
-                            
-                            <button name="pageIndex" class='page_but' value="<?php echo $page_array[$i]; ?>" >
-                                <?php echo ($i+1); ?>    
-                            </button>
-                            <input type="hidden" name="product_index" value="<?php echo $index ?>">
-                           
-                    <?php  } ?>
-                  </form>
-                </div> 
-              </div>
-
-
+            
 
           </div>
 

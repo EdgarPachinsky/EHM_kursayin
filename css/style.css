@@ -367,14 +367,18 @@ li {
   color: green;
 }
 .all-prods {
-    width: 95%;
-    height: auto;
+width: 95%;
+    height: 90%;
+    overflow-x: hidden;
     /* position: absolute; */
     top: 100px;
     padding-right: 10px;
     padding-left: 10px;
-    overflow: hidden;
     margin: 69px auto;
+    /* margin-bottom: 21px; */
+    padding-bottom: 0;
+    border-bottom-right-radius: 0px;
+    border-bottom-left-radius: 0px;
 }
 
 .tableTd{
