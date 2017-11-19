@@ -1,7 +1,14 @@
 <?php
   require "connect.php";
 
+if(isset($_POST['sorting']))
+{  $sort=$_POST['sorting'];
+   $sql = "SELECT * FROM `products` ORDER BY `products`.`product_name`".$sort;
+}
+else
+{
   $sql = "SELECT * FROM `products`";
+}
   $stmt_prod = $db->prepare($sql);
   $stmt_prod->execute();
   $prodsf = $stmt_prod->fetchAll();
@@ -14,8 +21,6 @@
   $cats = $stmt_prod->fetchAll();
   $stmt_prod->closeCursor();
 ?>
-
-
 
 <!DOCTYPE html>
 <html>
@@ -72,7 +77,7 @@
                         <div style="width: auto;padding: 10px 30px 10px 30px;font-family: 'Inconsolata', monospace;">
                           <h2><i class="fa fa-info-circle" aria-hidden="true"></i> MORE DETALED</h2>
                           <hr>
-                          <li class = "littleone"><div class = "icon_"><i class="fa fa-sort-alpha-asc" aria-hidden="true"></i> PRODUCT NAME: </div>  
+                          <li class = "littleone"><div class = "icon_"><i class="fa fa-sort-alpha-asc" aria-hidden="true"></i> PRODUCT NAME:</div>  
                                 <?php echo $prod['product_name']; ?>       
                           </li>
                           <hr>
@@ -117,12 +122,12 @@
                 <div class="search_result"></div>
               <!-- END RESULT -->
           </div>
-
+          <input type="hidden" value="<?php if(isset($_POST['sorting'])){ if($sort=="DESC"){echo "ASC";}else{echo "DESC";}}else{echo "ASC"; } ?>" id="sorting">
 
           <div class="all-prods">
             <table border='1' class = "custom-table">
               <tr>
-                <td class ="tableTd nameSpace"><i class="fa fa-sort-alpha-asc" aria-hidden="true"></i> Product Name </td>
+                <td class ="tableTd nameSpace sorting-by-name"><i class="fa fa-sort-alpha-asc" aria-hidden="true"></i> Product Name <?php if(isset($_POST['sorting'])){echo $_POST['sorting'];} ?></td>
                 <td class ="tableTd nameSpace"><i class="fa fa-bars" aria-hidden="true"></i> Product Category       </td>
                 <td class ="tableTd nameSpace"><i class="fa fa-archive" aria-hidden="true"></i> Product Description </td>
                 <td class ="tableTd nameSpace"><i class="fa fa-map-marker" aria-hidden="true"></i> Product Place    </td>
@@ -150,11 +155,11 @@
                   <td class ="tableTd"><?php echo $prodf['product_price']?></td>
 
                   <?php if($prodf['product_count'] == 0){?>
-                  <td class ="tableTd" style="background: #ff000087"><?php echo $prodf['product_count']?></td>
+                  <td class ="tableTd" style="background: rgba(244, 95, 95, 0.41);"><?php echo $prodf['product_count']?></td>
                   <?php } else if($prodf['product_count'] > 0 && $prodf['product_count'] < 20 ){ ?>
-                  <td class ="tableTd" style="background: #0000ff80"><?php echo $prodf['product_count']?></td>
+                  <td class ="tableTd" style="background: #247eab"><?php echo $prodf['product_count']?></td>
                   <?php } else if($prodf['product_count'] > 20 ){ ?>
-                  <td class ="tableTd" style="background: #00800080"><?php echo $prodf['product_count']?></td>
+                  <td class ="tableTd" style="background: rgba(35, 188, 35, 0.5)"><?php echo $prodf['product_count']?></td>
                   <?php }?>
 
                 </tr>

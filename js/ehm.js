@@ -78,7 +78,14 @@ $(document).ready(function() {
     })
   })
 
-  
+  $('.sorting-by-name').click(function(){
+       var sort=$('#sorting').val()
+    $.post('index.php',{sorting:sort},function(res){
+      $('body').html(res);
+    })
+
+
+  })
 
 
 })

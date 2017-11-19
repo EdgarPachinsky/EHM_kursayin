@@ -723,7 +723,10 @@ width: 95%;
   text-align: center;
 }
 
-
+.sorting-by-name
+{
+  cursor: pointer;
+}
 .action_buttons
 {
     height: 30px;
