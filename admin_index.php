@@ -12,47 +12,6 @@ if(isset($_SESSION['login']))
 
   require "connect.php";
   include "functions.php";
-  /*$sql = " SELECT * FROM `product_categories`";
-  $cats =sql_query($sql);
-    $prodCount=80;
-    $page_array=array(); 
-    $page_array[0]=0;
-    $lastId =0;
-  
-    if(isset($_POST['pageIndex']) && $_POST['pageIndex']!=0 ){
-        $lastId = $_POST['pageIndex'];
-        $prod_sql="SELECT * FROM `products` WHERE `id` < '$lastId' ORDER BY `id` DESC LIMIT $prodCount ";
-    }
-    else {
-         $prod_sql="SELECT * FROM `products`  ORDER BY `id` DESC LIMIT $prodCount ";
-    }
-
-
-    $prodsf = sql_query($prod_sql);
-    $buttonsQuery="SELECT `id` FROM `products`  ORDER BY `id` DESC";
-    $buttonRes=sql_query($buttonsQuery);
-   
-    $array_id=1;
-    $id_count=0;
-    
-     for ($i=0; $i < count($buttonRes) ; $i++) { 
-         $id_count++ ;
-         if($id_count%$prodCount==0 && isset($buttonRes[$i+1]['id']))        {
-             $page_array[$array_id]=$buttonRes[$i]['id'];
-             $array_id++ ;
-         }
-     }    */
-
-   /*  if(isset($_POST['product_index']))
-     {
-      $index=$_POST['product_index'];
-      unset($_POST['product_index']);
-     }
-     else*/
-  // $index=0;
-
-
-
   $sql = "SELECT * FROM `product_categories`";
   $stmt_catsN = $db->prepare($sql);
   $stmt_catsN->execute();
@@ -65,6 +24,7 @@ if(isset($_SESSION['login']))
   $stmt_catsN->execute();
   $prodsf = $stmt_catsN->fetchAll();
   $stmt_catsN->closeCursor();
+  $prod_index = 1;
 ?>
 
 
@@ -290,6 +250,7 @@ if(isset($_SESSION['login']))
                <!-- add modal end -->
             <table border='1' class = "custom-table">
               <tr>
+                <td class ="tableTd nameSpace" width="50">#</td>
                 <td class ="tableTd nameSpace"><i class="fa fa-sort-alpha-asc" aria-hidden="true"></i> Product Name </td>
                 <td class ="tableTd nameSpace"><i class="fa fa-bars" aria-hidden="true"></i> Product Category       </td>
                 <td class ="tableTd nameSpace"><i class="fa fa-archive" aria-hidden="true"></i> Product Description </td>
@@ -301,7 +262,7 @@ if(isset($_SESSION['login']))
               <?php
               foreach($prodsf as $prodf){?>
                 <tr width = 200 class = "click-to-see-product">
-                 
+                  <td class ="tableTd" width="50"><?php echo $prod_index;$prod_index++;?></td>
                   <td class ="tableTd" ><?php echo $prodf['product_name']?></td>
 
                   <?php 

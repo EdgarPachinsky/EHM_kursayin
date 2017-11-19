@@ -28,6 +28,7 @@ else
   $stmt_prod->execute();
   $cats = $stmt_prod->fetchAll();
   $stmt_prod->closeCursor();
+  $prod_index = 1;
 ?>
 
 <!DOCTYPE html>
@@ -142,6 +143,7 @@ else
           <div class="all-prods">
             <table border='1' class = "custom-table">
               <tr>
+                <td class ="tableTd nameSpace" width="50">#</td>
                 <td class ="tableTd nameSpace sorting-by-name" title="Sorting By Name"><i class="fa fa-sort-alpha-asc" aria-hidden="true"></i> Product Name <?php if(isset($_POST['sorting'])){echo $_POST['sorting'];} ?></td>
                 <td class ="tableTd nameSpace"><i class="fa fa-bars" aria-hidden="true"></i> Product Category</td>
                 <td class ="tableTd nameSpace"><i class="fa fa-archive" aria-hidden="true"></i> Product Description </td>
@@ -152,8 +154,9 @@ else
               </tr>
               <?php
               foreach($prodsf as $prodf){?>
-                <tr width = 200 class = "click-to-see-product">
+                <tr class = "click-to-see-product">
 
+                  <td class ="tableTd" width="50"><?php echo $prod_index;$prod_index++;?></td>
                   <td class ="tableTd"><?php echo $prodf['product_name']?></td>
 
                   <?php 
@@ -169,7 +172,6 @@ else
                   <td class ="tableTd"><?php echo $prodf['product_description']?></td>
                   <td class ="tableTd"><?php echo $prodf['product_place']?></td>
                   <td class ="tableTd"><?php echo $prodf['product_price']?></td>
-
                   <?php if($prodf['product_count'] == 0){?>
                   <td class ="tableTd" style="background: rgba(244, 95, 95, 0.41);"><?php echo $prodf['product_count']?></td>
                   <?php } else if($prodf['product_count'] > 0 && $prodf['product_count'] < 20 ){ ?>
@@ -177,12 +179,10 @@ else
                   <?php } else if($prodf['product_count'] > 20 ){ ?>
                   <td class ="tableTd" style="background: rgba(35, 188, 35, 0.5)"><?php echo $prodf['product_count']?></td>
                   <?php }?>
-
                 </tr>
               <?php }?>
             </table>
             
-
           </div>
 
       </div>
