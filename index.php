@@ -7,6 +7,12 @@
   $prodsf = $stmt_prod->fetchAll();
   $stmt_prod->closeCursor();
 
+
+  $sql = " SELECT * FROM `product_categories`";
+  $stmt_prod = $db->prepare($sql);
+  $stmt_prod->execute();
+  $cats = $stmt_prod->fetchAll();
+  $stmt_prod->closeCursor();
 ?>
 
 
