@@ -51,6 +51,10 @@ height: 200px;
 max-width: 700px;
   }
 
+.click-to-see-product
+{
+  cursor: pointer;
+}
 
 
 .modal_div
