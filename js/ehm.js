@@ -69,7 +69,14 @@ $(document).ready(function() {
 	}
   })
 
-
+  $('.click-to-see-product').click(function(){
+    $('.click-to-see-product').css({
+      'background':'transparent',
+    })
+    $(this).css({
+      'background':'black',
+    })
+  })
 
 
 })

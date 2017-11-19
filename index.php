@@ -156,7 +156,7 @@
               </tr>
               <?php
               foreach($prodsf as $prodf){?>
-                <tr width = 200>
+                <tr width = 200 class = "click-to-see-product">
 
                   <td class ="tableTd"><?php echo $prodf['product_name']?></td>
 
