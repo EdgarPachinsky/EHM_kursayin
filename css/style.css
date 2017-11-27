@@ -20,6 +20,11 @@
  border: 1px solid #23546a;
 }
 
+.inpCheck
+{
+  width:145px !important;
+}
+
 .btn_sumbit
 {
 
@@ -276,15 +281,17 @@ label:hover{
 }
 
 .search{
-  width: max-content;
-  height: 30px;
-  border-radius: 6px;
-  border:solid 1px whitesmoke;
-  position: relative;
-  right: 4%;
-  float: right;
-  top: 1%;
-  background: whitesmoke
+    width: max-content;
+    height: 30px;
+    border-radius: 6px;
+    border: solid 1px whitesmoke;
+    position: relative;
+    right: 4%;
+    float: right;
+    padding: 4px;
+    padding-left: 6px;
+    top: 1%;
+    background: whitesmoke;
 }
 
 .search:hover{
@@ -459,6 +466,10 @@ width: 95%;
     color: #ffffff;
     
 }
+#file
+{
+  cursor: pointer;
+}
 .go_back_to_index
 {
     position: absolute;
@@ -500,12 +511,11 @@ width: 95%;
     background: whitesmoke;
     padding-top: 40px;
 }
-.log_out
-{
-    position: absolute;
-    left: 44px;
-    top: 12px;
-    z-index: 1518188;
+.log_out {
+    float: right;
+    right: 62px;
+    top: 63px;
+    
 }
 .log_out button {
     background: whitesmoke;
@@ -723,7 +733,7 @@ width: 95%;
   text-align: center;
 }
 
-.sorting-by-name,.sorting-by-price,.sorting-by-count,.sorting-by-category
+.sorting-by-name,.sorting-by-price,.sorting-by-count,.sorting-by-category,.sorting-by-date
 {
   cursor: pointer;
 }

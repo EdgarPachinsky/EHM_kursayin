@@ -46,14 +46,14 @@ $(document).ready(function() {
   });
   $searchWord.keyup(function(){
   	var checklen=0;
-  	var searchArray = [5];
-  	for (var i = 0; i < 5; i++) {
+  	var searchArray = [7];
+  	for (var i = 0; i < 7; i++) {
   		searchArray[i]=$('#search-input'+i).val();
   		if(searchArray[i].length==0){
   			checklen++;
   		}
   	}
-  	if(checklen == 5){
+  	if(checklen == 7){
   		$resBlock.html(null);
   		$resBlock.css({
   			'display':'none'
@@ -117,6 +117,17 @@ $(document).ready(function() {
     })
 
   })
+
+     ///////////////////////sorting by date/////////////
+
+  $('.sorting-by-date').click(function(){
+       var date=$('#sort_date').val()
+    $.post(window.location.href,{sort_date:date},function(res){
+      $('body').html(res);
+    })
+
+  })
+
 
 
 })

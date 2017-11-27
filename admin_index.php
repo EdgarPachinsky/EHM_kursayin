@@ -35,6 +35,10 @@ else if(isset($_POST['sort_category']))
 {  $sort_category=$_POST['sort_category'];
    $sql = "SELECT * FROM `products` JOIN `product_categories` ON `products`.`category_id`=`product_categories`.`id` ORDER BY `product_categories`.`product_category_name` ".$sort_category;
 }
+else if(isset($_POST['sort_date']))
+{  $sort_date=$_POST['sort_date'];
+   $sql = "SELECT * FROM `products` ORDER BY `products`.`create_date`".$sort_date;
+}
 else
 {
   $sql = "SELECT * FROM `products`";
@@ -208,12 +212,6 @@ else
       </div>
         
       <div class='result'>
-       <div class="log_out">
-        <form action="admin_index.php" method="post">
-         <button name="log_out" value="log_out">Log Out</button>
-       </form>
-      </div>
-
           <label id='file'>
               <input type="file">
               <i class="fa fa-file" aria-hidden="true"></i>
@@ -225,6 +223,8 @@ else
               <input class="inpCheck" type="search" id="search-input2" value="" name="search-input2" placeholder="Prod place">
               <input class="inpCheck" type="search" id="search-input3" value="" name="search-input3" placeholder="Prod price">
               <input class="inpCheck" type="search" id="search-input4" value="" name="search-input4" placeholder="Prod category">
+              <input class="inpCheck" type="search" id="search-input5" value="" name="search-input5" placeholder="Prod Count">
+              <input class="inpCheck" type="search" id="search-input6" value="" name="search-input6" placeholder="Create Date">
               <button ><i class="fa fa-search" aria-hidden="true"></i></button>   
               
               <!-- RESULT -->
@@ -234,9 +234,14 @@ else
 
 
           <div class="all-prods">
+                   <div class="log_out">
+                    <form action="admin_index.php" method="post">
+                     <button name="log_out" value="log_out">Log Out</button>
+                   </form>
+                     </div>
              <button class="add_product_btn btn btn-default open_modal" ><i class="fa fa-plus-circle" aria-hidden="true"></i> Add New Product</button>
                <!-- add modal -->
-                        <div class='modal_div add_modal'>
+                        <div class='modal_div add_modal '>
                             <div class="modal_div-content">
                                 <div class="modal_div-header">
                                     <button class="close_modal" ><i class="fa fa-times" aria-hidden="true"></i></button>
@@ -246,7 +251,9 @@ else
                                     <p>Add Product</p>
                                      <form action="admin_edit_delete_add.php" method="post">
                                        <input type="text" name="product_name" placeholder="Product Name *" required> <br>
-                                       <textarea name="product_description" placeholder="Product Description *" required></textarea><br>
+                                       <textarea name="product_description" placeholder="Product Description *" required></textarea>
+                                       <p>Product Date</p>
+                                       <input type="date" name="create_date" placeholder="Product Create Date*" required> <br>
                                        <input type="text" name="product_place" placeholder="Product Place *" required> <br>
                                        <input type="number" name="product_price" placeholder="Product Price *" required>  <br>
                                        <input type="number" name="product_count" placeholder="Product Count *" required>  <br>
@@ -276,19 +283,23 @@ else
          <input type="hidden" value="<?php if(isset($_POST['count_sort'])){ if($sort_count=="DESC"){echo "ASC";}else{echo "DESC";}}else{echo "ASC"; } ?>" id="count_sort">
 
          <input type="hidden" value="<?php if(isset($_POST['sort_category'])){ if($sort_category=="DESC"){echo "ASC";}else{echo "DESC";}}else{echo "ASC"; } ?>" id="sort_category">
+
+         <input type="hidden" value="<?php if(isset($_POST['sort_date'])){ if($sort_date=="DESC"){echo "ASC";}else{echo "DESC";}}else{echo "ASC"; } ?>" id="sort_date">
           <!-- end sorting inputs -->
 
 
             <table border='1' class = "custom-table">
-               <tr>
+              <tr>
                 <td class ="tableTd nameSpace" width="50">#</td>
                 <td class ="tableTd nameSpace sorting-by-name" title="Sorting By Name"><i class="fa fa-sort-alpha-asc" aria-hidden="true"></i> Product Name <?php if(isset($_POST['sorting'])){echo $_POST['sorting'];} ?></td>
-                <td class ="tableTd nameSpace sorting-by-category" title="Sorting By Category"><i class="fa fa-bars" aria-hidden="true"></i> Product Category<?php if(isset($_POST['sort_category'])){echo $_POST['sort_category'];} ?></td>
+                <td class ="tableTd nameSpace sorting-by-category" title="Sorting By Category"><i class="fa fa-bars" aria-hidden="true"></i> Product Category <?php if(isset($_POST['sort_category'])){echo $_POST['sort_category'];} ?></td>
                 <td class ="tableTd nameSpace"><i class="fa fa-archive" aria-hidden="true"></i> Product Description </td>
                 <td class ="tableTd nameSpace"><i class="fa fa-map-marker" aria-hidden="true"></i> Product Place    </td>
-                <td class ="tableTd nameSpace sorting-by-price" title="Sorting By Price"><i class="fa fa-money" aria-hidden="true"></i>Product Price
+                <td class ="tableTd nameSpace sorting-by-price" title="Sorting By Price"><i class="fa fa-money" aria-hidden="true"></i>Product Price 
                 <?php if(isset($_POST['price_sort'])){echo $_POST['price_sort'];} ?></td>
-                <td class ="tableTd nameSpace sorting-by-count" title="Sorting By Count"><i class="fa fa-check-square-o" aria-hidden="true"></i> Product Count<?php if(isset($_POST['count_sort'])){echo $_POST['count_sort'];} ?></td>
+                 <td class ="tableTd nameSpace sorting-by-date" title="Sorting By Date"><i class="fa fa-calendar" aria-hidden="true"></i>Product Date <?php if(isset($_POST['sort_date'])){echo $_POST['sort_date'];} ?></td>
+                <td class ="tableTd nameSpace sorting-by-count" title="Sorting By Count"><i class="fa fa-check-square-o" aria-hidden="true"></i>Product Count <?php if(isset($_POST['count_sort'])){echo $_POST['count_sort'];} ?></td>
+                <td class ="tableTd nameSpace "><i class="fa fa-cogs" aria-hidden="true"></i>Actions</td>
               </tr>
               <?php
               foreach($prodsf as $prodf){?>
@@ -309,6 +320,7 @@ else
                   <td class ="tableTd"><?php echo $prodf['product_description']?></td>
                   <td class ="tableTd"><?php echo $prodf['product_place']?></td>
                   <td class ="tableTd"><?php echo $prodf['product_price']?></td>
+                  <td class ="tableTd"><?php echo $prodf['create_date']?></td>
 
                   <?php if($prodf['product_count'] == 0){?>
                   <td class ="tableTd" style="background: rgba(244, 95, 95, 0.41);"><?php echo $prodf['product_count']?></td>
@@ -323,7 +335,7 @@ else
                   	
                   		<button class="action_buttons action_edit open_edit_modal" value="<?php echo $prodf['id']; ?>"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>   
                       <!-- edit modal -->
-                        <div class='modal_div edit_modal'>
+                        <div class='modal_div edit_modal '>
                             <div class="modal_div-content">
                                 <div class="modal_div-header">
                                     <button class="close_modal" ><i class="fa fa-times" aria-hidden="true"></i></button>
@@ -336,6 +348,8 @@ else
                                        <input type="text" name="product_name" value="<?php echo $prodf['product_name']?>" placeholder="Product Name *" required> <br>
                                        <p>Product Description</p>
                                        <textarea name="product_description"  placeholder="Product Description *" required><?php echo $prodf['product_description']?></textarea><br>
+                                         <p>Product Date</p>
+                                         <input type="date" name="create_date" value="<?php echo $prodf['create_date']?>" placeholder="Product Create Date*" required>  <br>
                                        <p>Product Place</p>
                                        <input type="text" value="<?php echo $prodf['product_place']?>" name="product_place" placeholder="Product Place *" required> <br>
                                        <p>Product Price</p>
