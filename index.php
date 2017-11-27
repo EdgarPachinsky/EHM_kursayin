@@ -13,6 +13,10 @@ else if(isset($_POST['count_sort']))
 {  $sort_count=$_POST['count_sort'];
    $sql = "SELECT * FROM `products` ORDER BY `products`.`product_count`".$sort_count;
 }
+else if(isset($_POST['sort_category']))
+{  $sort_category=$_POST['sort_category'];
+   $sql = "SELECT * FROM `products` JOIN `product_categories` ON `products`.`category_id`=`product_categories`.`id` ORDER BY `product_categories`.`product_category_name` ".$sort_category;
+}
 else
 {
   $sql = "SELECT * FROM `products`";
@@ -138,14 +142,14 @@ else
            
          <input type="hidden" value="<?php if(isset($_POST['count_sort'])){ if($sort_count=="DESC"){echo "ASC";}else{echo "DESC";}}else{echo "ASC"; } ?>" id="count_sort">
 
-
+         <input type="hidden" value="<?php if(isset($_POST['sort_category'])){ if($sort_category=="DESC"){echo "ASC";}else{echo "DESC";}}else{echo "ASC"; } ?>" id="sort_category">
           <!-- end sorting inputs -->
           <div class="all-prods">
             <table border='1' class = "custom-table">
               <tr>
                 <td class ="tableTd nameSpace" width="50">#</td>
                 <td class ="tableTd nameSpace sorting-by-name" title="Sorting By Name"><i class="fa fa-sort-alpha-asc" aria-hidden="true"></i> Product Name <?php if(isset($_POST['sorting'])){echo $_POST['sorting'];} ?></td>
-                <td class ="tableTd nameSpace"><i class="fa fa-bars" aria-hidden="true"></i> Product Category</td>
+                <td class ="tableTd nameSpace sorting-by-category" title="Sorting By Category"><i class="fa fa-bars" aria-hidden="true"></i> Product Category<?php if(isset($_POST['sort_category'])){echo $_POST['sort_category'];} ?></td>
                 <td class ="tableTd nameSpace"><i class="fa fa-archive" aria-hidden="true"></i> Product Description </td>
                 <td class ="tableTd nameSpace"><i class="fa fa-map-marker" aria-hidden="true"></i> Product Place    </td>
                 <td class ="tableTd nameSpace sorting-by-price" title="Sorting By Price"><i class="fa fa-money" aria-hidden="true"></i>Product Price

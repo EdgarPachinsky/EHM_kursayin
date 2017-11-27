@@ -723,7 +723,7 @@ width: 95%;
   text-align: center;
 }
 
-.sorting-by-name,.sorting-by-price,.sorting-by-count
+.sorting-by-name,.sorting-by-price,.sorting-by-count,.sorting-by-category
 {
   cursor: pointer;
 }

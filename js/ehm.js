@@ -82,7 +82,7 @@ $(document).ready(function() {
 
   $('.sorting-by-name').click(function(){
        var sort=$('#sorting').val()
-    $.post('index.php',{sorting:sort},function(res){
+    $.post(window.location.href,{sorting:sort},function(res){
       $('body').html(res);
     })
 
@@ -92,7 +92,7 @@ $(document).ready(function() {
 
   $('.sorting-by-price').click(function(){
        var price=$('#price_sort').val()
-    $.post('index.php',{price_sort:price},function(res){
+    $.post(window.location.href,{price_sort:price},function(res){
       $('body').html(res);
     })
 
@@ -102,7 +102,17 @@ $(document).ready(function() {
 
   $('.sorting-by-count').click(function(){
        var count=$('#count_sort').val()
-    $.post('index.php',{count_sort:count},function(res){
+    $.post(window.location.href,{count_sort:count},function(res){
+      $('body').html(res);
+    })
+
+  })
+
+    ///////////////////////sorting by category/////////////
+
+  $('.sorting-by-category').click(function(){
+       var category=$('#sort_category').val()
+    $.post(window.location.href,{sort_category:category},function(res){
       $('body').html(res);
     })
 

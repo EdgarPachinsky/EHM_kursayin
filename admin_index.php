@@ -19,7 +19,26 @@ if(isset($_SESSION['login']))
   $stmt_catsN->closeCursor();
 
 
+if(isset($_POST['sorting']))
+{  $sort=$_POST['sorting'];
+   $sql = "SELECT * FROM `products` ORDER BY `products`.`product_name`".$sort;
+}
+else if(isset($_POST['price_sort']))
+{  $sort_price=$_POST['price_sort'];
+   $sql = "SELECT * FROM `products` ORDER BY `products`.`product_price`".$sort_price;
+}
+else if(isset($_POST['count_sort']))
+{  $sort_count=$_POST['count_sort'];
+   $sql = "SELECT * FROM `products` ORDER BY `products`.`product_count`".$sort_count;
+}
+else if(isset($_POST['sort_category']))
+{  $sort_category=$_POST['sort_category'];
+   $sql = "SELECT * FROM `products` JOIN `product_categories` ON `products`.`category_id`=`product_categories`.`id` ORDER BY `product_categories`.`product_category_name` ".$sort_category;
+}
+else
+{
   $sql = "SELECT * FROM `products`";
+}
   $stmt_catsN = $db->prepare($sql);
   $stmt_catsN->execute();
   $prodsf = $stmt_catsN->fetchAll();
@@ -248,16 +267,28 @@ if(isset($_SESSION['login']))
                             </div>
                         </div>
                <!-- add modal end -->
+
+          <!-- sorting inputs -->
+          <input type="hidden" value="<?php if(isset($_POST['sorting'])){ if($sort=="DESC"){echo "ASC";}else{echo "DESC";}}else{echo "ASC"; } ?>" id="sorting">
+
+          <input type="hidden" value="<?php if(isset($_POST['price_sort'])){ if($sort_price=="DESC"){echo "ASC";}else{echo "DESC";}}else{echo "ASC"; } ?>" id="price_sort">
+           
+         <input type="hidden" value="<?php if(isset($_POST['count_sort'])){ if($sort_count=="DESC"){echo "ASC";}else{echo "DESC";}}else{echo "ASC"; } ?>" id="count_sort">
+
+         <input type="hidden" value="<?php if(isset($_POST['sort_category'])){ if($sort_category=="DESC"){echo "ASC";}else{echo "DESC";}}else{echo "ASC"; } ?>" id="sort_category">
+          <!-- end sorting inputs -->
+
+
             <table border='1' class = "custom-table">
-              <tr>
+               <tr>
                 <td class ="tableTd nameSpace" width="50">#</td>
-                <td class ="tableTd nameSpace"><i class="fa fa-sort-alpha-asc" aria-hidden="true"></i> Product Name </td>
-                <td class ="tableTd nameSpace"><i class="fa fa-bars" aria-hidden="true"></i> Product Category       </td>
+                <td class ="tableTd nameSpace sorting-by-name" title="Sorting By Name"><i class="fa fa-sort-alpha-asc" aria-hidden="true"></i> Product Name <?php if(isset($_POST['sorting'])){echo $_POST['sorting'];} ?></td>
+                <td class ="tableTd nameSpace sorting-by-category" title="Sorting By Category"><i class="fa fa-bars" aria-hidden="true"></i> Product Category<?php if(isset($_POST['sort_category'])){echo $_POST['sort_category'];} ?></td>
                 <td class ="tableTd nameSpace"><i class="fa fa-archive" aria-hidden="true"></i> Product Description </td>
                 <td class ="tableTd nameSpace"><i class="fa fa-map-marker" aria-hidden="true"></i> Product Place    </td>
-                <td class ="tableTd nameSpace"><i class="fa fa-money" aria-hidden="true"></i> Product Price         </td>
-                <td class ="tableTd nameSpace"><i class="fa fa-money" aria-hidden="true"></i> Product Count         </td>
-                <td  class="actionTd"><i class="fa fa-pencil" aria-hidden="true"></i> Actions</td>
+                <td class ="tableTd nameSpace sorting-by-price" title="Sorting By Price"><i class="fa fa-money" aria-hidden="true"></i>Product Price
+                <?php if(isset($_POST['price_sort'])){echo $_POST['price_sort'];} ?></td>
+                <td class ="tableTd nameSpace sorting-by-count" title="Sorting By Count"><i class="fa fa-check-square-o" aria-hidden="true"></i> Product Count<?php if(isset($_POST['count_sort'])){echo $_POST['count_sort'];} ?></td>
               </tr>
               <?php
               foreach($prodsf as $prodf){?>
@@ -280,11 +311,11 @@ if(isset($_SESSION['login']))
                   <td class ="tableTd"><?php echo $prodf['product_price']?></td>
 
                   <?php if($prodf['product_count'] == 0){?>
-                  <td class ="tableTd" style="background: #ff000087"><?php echo $prodf['product_count']?></td>
+                  <td class ="tableTd" style="background: rgba(244, 95, 95, 0.41);"><?php echo $prodf['product_count']?></td>
                   <?php } else if($prodf['product_count'] > 0 && $prodf['product_count'] < 20 ){ ?>
-                  <td class ="tableTd" style="background: #0000ff80"><?php echo $prodf['product_count']?></td>
+                  <td class ="tableTd" style="background: #247eab"><?php echo $prodf['product_count']?></td>
                   <?php } else if($prodf['product_count'] > 20 ){ ?>
-                  <td class ="tableTd" style="background: #00800080"><?php echo $prodf['product_count']?></td>
+                  <td class ="tableTd" style="background: rgba(35, 188, 35, 0.5)"><?php echo $prodf['product_count']?></td>
                   <?php }?>
 
 
